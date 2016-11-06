@@ -1,11 +1,11 @@
-# steppernpm
+# pisteppermotor
 Stepper Motor npm module for node.js 
 
 This library is a javascript/node.js rewrite of adafruits python based motor drivers to support the Raspberry pi motor hat https://www.adafruit.com/product/2348
 
 ## Installation
 
-npm install scapegoat --save
+npm install pisteppermotor --save
 
 ## Usage
 
