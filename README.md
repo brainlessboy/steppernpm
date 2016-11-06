@@ -3,7 +3,11 @@ Stepper Motor npm module for node.js
 
 This library is a javascript/node.js rewrite of adafruits python based motor drivers to support the Raspberry pi motor hat https://www.adafruit.com/product/2348
 
-example code:
+## Installation
+
+npm install scapegoat --save
+
+## Usage
 
     var mh = new this.MotorHat();
     mh.init();
@@ -27,6 +31,11 @@ example code:
     myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
     myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
 
+## Tests
 
-todo: library documentaiton
+npm test
+
+## Release History
+
+* 0.0.1 Initial release (untestetd with npm!)
 
