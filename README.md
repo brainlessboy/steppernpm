@@ -5,7 +5,7 @@ This library is a javascript/node.js rewrite of adafruits python based motor dri
 
 ## Installation
 
-npm install pisteppermotor --save
+        npm install pisteppermotor --save
 
 ## Usage
 
@@ -33,7 +33,11 @@ npm install pisteppermotor --save
 
 ## Tests
 
-npm test
+        npm test
+
+also motor.js can be used for inital tests on the RaspberryP
+
+        node motor.js
 
 ## Release History
 
