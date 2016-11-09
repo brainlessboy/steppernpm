@@ -11,21 +11,22 @@ module.exports = {
     i2c: function (address, object) {
 
         this.scan = function (f) {
-            console.log("scan:" + f);
+            console.log("e2c mock scan:");
         }
 
         this.writeByte = function (addr, f) {
-            console.log("writeByte: " + addr + " " + f);
+            console.log("e2c mock writeByte: " + addr);
         }
 
         this.readBytes = function (mode, n, f) {
-            console.log("readByte: " + mode + " " + n + " " + f);
+            console.log("e2c mock readByte: " + mode + " " + n);
         }
 
         this.writeBytes = function (address, bytes, err) {
-            console.log("writeBytes: " + address + " " + bytes + " " + err);
+            console.log("e2c mock writeBytes: " + address + " " + bytes);
         }
-    },
+    }
+    ,
 
     /**
      * make sure all hardware is hooked before testing
@@ -34,7 +35,7 @@ module.exports = {
     test: function () {
 
         var address = 0x60;
-        var wire = new i2c(address, {device: '/dev/i2c-1'});
+        var wire = new module.exports.i2c(address, {device: '/dev/i2c-1'});
 
         wire.scan(function (err, data) {
             console.log("err:" + err);
@@ -45,7 +46,7 @@ module.exports = {
             }
         });
 
-        var mh = new this.MotorHat();
+        var mh = new module.exports.MotorHat();
         mh.init();
 
         myStepper = mh.getStepper(200, 1);
@@ -68,7 +69,8 @@ module.exports = {
             myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
             myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
         }
-    },
+    }
+    ,
 
     /**
      * MotorHat object containing all required functions
@@ -102,6 +104,8 @@ module.exports = {
          */
         this.init = function (addr, freq) {
 
+            console.log("init motor ...");
+
             if (addr) {
                 this.i2caddr = addr;
             }
@@ -112,17 +116,20 @@ module.exports = {
 
             this.motors = [];
 
-            var stepperOne = new StepperMotor();
+            var stepperOne = new module.exports.StepperMotor();
             stepperOne.init(this, 0, 200);
 
-            var stepperTwo = new StepperMotor(2);
+            var stepperTwo = new module.exports.StepperMotor(2);
             stepperTwo.init(this, 1, 200);
 
             this.steppers = [stepperOne, stepperTwo];
 
-            this.pwm = new PWM();
+            this.pwm = new module.exports.PWM();
             this.pwm.init(0x60);
             this.pwm.setPWMFreq(this.frequency);
+
+            console.log("init motor done ...");
+
         };
 
         this.setPin = function (pin, value) {
@@ -154,7 +161,8 @@ module.exports = {
             }
             return this.motors[num - 1];
         }
-    },
+    }
+    ,
     PWM: function () {
 
         this.MODE1 = 0x00;
@@ -195,7 +203,7 @@ module.exports = {
 
         this.init = function (address) {
 
-            this.wire = new i2c(address, {device: '/dev/i2c-1'});
+            this.wire = new module.exports.i2c(address, {device: '/dev/i2c-1'});
             this.setALLPWM(0, 0);
 
             this.writeBytes(this.MODE2, [this.OUTDRV]);
@@ -270,7 +278,8 @@ module.exports = {
                 }
             });
         }
-    },
+    }
+    ,
 
     /**
      * Stepper Motor Object
@@ -297,6 +306,8 @@ module.exports = {
 
         this.init = function (controller, num, steps) {
 
+            console.log("start init Stepper Motor ...");
+
             this.MC = controller;
             this.revsteps = steps;
             this.motornum = num;
@@ -319,6 +330,8 @@ module.exports = {
             } else {
                 console.log('MotorHAT Stepper must be between 1 and 2 inclusive');
             }
+
+            console.log("done init Stepper Motor ...");
         };
 
         this.setSpeed = function (rpm) {
@@ -476,7 +489,8 @@ module.exports = {
                 }
             }
         }
-    },
+    }
+    ,
     /**
      * turn off motors
      * @param motorHat
@@ -485,3 +499,5 @@ module.exports = {
         console.log("all motors off");
     }
 };
+
+
