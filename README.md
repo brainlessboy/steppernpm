@@ -41,5 +41,5 @@ also motor.js can be used for inital tests on the RaspberryP
 
 ## Release History
 
-* 0.0.1 Initial release (untestetd with npm!)
+* 0.0.1 Initial release (untested with npm!)
 
