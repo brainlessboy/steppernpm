@@ -8,6 +8,11 @@ var sleep = require('sleep');
  */
 module.exports = {
 
+    /**
+     * mock i2c service
+     * @param address
+     * @param object
+     */
     i2c: function (address, object) {
 
         this.scan = function (f) {
