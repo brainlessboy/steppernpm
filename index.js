@@ -312,7 +312,7 @@ var Motor = {
         this.setSpeed = function (rpm) {
             this.sec_per_step = Math.floor((60 * 1000000) / (this.revsteps * rpm));
             this.steppingCounter = 0;
-            console.log("speen" + rpm + " " + this.sec_per_step);
+            console.log("speed: " + rpm + " " + this.sec_per_step);
         };
 
         this.oneStep = function (dir, style) {
@@ -444,6 +444,8 @@ var Motor = {
             var s_per_s = this.sec_per_step;
             var lateststep = 0;
 
+            console.log("s_per_s:" + s_per_s);
+
             if (stepstyle == Motor.MotorHat.INTERLEAVE) {
                 s_per_s = Math.floor(s_per_s / 2);
             }
@@ -463,7 +465,7 @@ var Motor = {
                     sleep.sleep(s_per_s);
                 }
             }
-        }
+        };
     }
 };
 module.exports = Motor;
