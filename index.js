@@ -23,7 +23,7 @@ var Motor = {
             console.log("data:" + data);
 
             for (i = 0; i < data.length; i++) {
-                console.log("" + data[i] + " -> " + hex8(data[i]));
+                console.log("" + data[i]);
             }
         });
 
