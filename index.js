@@ -9,6 +9,8 @@ var sleep = require('sleep');
  */
 var Motor = {
 
+    sleepTime:500,
+
     /**
      * make sure all hardware is hooked before testing
      * the test will loop 10 times each type of coil
@@ -189,7 +191,7 @@ var Motor = {
             this.writeBytes(this.MODE2, [this.OUTDRV]);
             this.writeBytes(this.MODE1, [this.ALLCALL]);
 
-            sleep.usleep(500);
+            sleep.usleep(Motor.sleepTime);
 
             this.wire.readBytes(this.MODE1, 1, function (err, res) {
 
@@ -204,7 +206,7 @@ var Motor = {
             this.mode1 = this.mode1 & ~this.SLEEP;
             this.writeBytes(this.MODE1, [this.mode1]);
 
-            sleep.usleep(500);
+            sleep.usleep(Motor.sleepTime);
         };
 
         /**
@@ -232,7 +234,7 @@ var Motor = {
             this.writeBytes(this.MODE1, [this.newmode]);
             this.writeBytes(this.PRESCALE, [Math.floor(this.prescale)]);
             this.writeBytes(this.MODE1, [this.oldmode]);
-            sleep.usleep(500);
+            sleep.usleep(Motor.sleepTime);
             this.writeBytes(this.MODE1, [this.oldmode | 0x80]);
         };
 
@@ -251,15 +253,13 @@ var Motor = {
         };
 
         this.writeBytes = function (address, bytes) {
-            console.log(address + " " + bytes);
             this.wire.writeBytes(address, bytes, function (err) {
                 if (err) {
                     console.out("PWM write failure ->" + err);
                 }
             });
         }
-    }
-    ,
+    },
 
     /**
      * Stepper Motor Object

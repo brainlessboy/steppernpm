@@ -40,6 +40,7 @@ while (true) {
     myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
     myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
 }
+turnOffMotors(motorHat);
 
 
 /**
@@ -237,7 +238,6 @@ function PWM() {
     };
 
     this.writeBytes = function (address, bytes) {
-        console.log(address + " " + bytes);
         this.wire.writeBytes(address, bytes, function (err) {
             if (err) {
                 console.out("PWM write failure ->" + err);
