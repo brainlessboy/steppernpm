@@ -7,7 +7,7 @@ var sleep = require('sleep');
  * @param  {String} html
  * @return {String}
  */
-module.exports = {
+var Motor = {
 
     /**
      * make sure all hardware is hooked before testing
@@ -27,7 +27,7 @@ module.exports = {
             }
         });
 
-        var mh = new module.exports.MotorHat();
+        var mh = new Motor.MotorHat();
         mh.init();
 
         myStepper = mh.getStepper(200, 1);
@@ -94,16 +94,16 @@ module.exports = {
 
             this.motors = [];
 
-            var stepperOne = new module.exports.StepperMotor();
+            var stepperOne = new Motor.StepperMotor();
             stepperOne.init(this, 0, 200);
 
-            var stepperTwo = new module.exports.StepperMotor();
+            var stepperTwo = new Motor.StepperMotor();
             stepperTwo.init(this, 1, 200);
 
             this.steppers = [stepperOne, stepperTwo];
 
             try {
-                this.pwm = new module.exports.PWM();
+                this.pwm = new Motor.PWM();
                 this.pwm.init(0x60);
                 this.pwm.setPWMFreq(this.frequency);
             } catch (err) {
@@ -321,16 +321,16 @@ module.exports = {
             // todo: just implemented one style, make the others as well
 
             // single
-            if (style == module.exports.MotorHat.SINGLE) {
+            if (style == Motor.MotorHat.SINGLE) {
                 if ((this.currentstep / (this.MICROSTEPS / 2)) % 2) {
 
-                    if (dir == module.exports.MotorHat.FORWARD) {
+                    if (dir == Motor.MotorHat.FORWARD) {
                         this.currentstep += this.MICROSTEPS / 2;
                     } else {
                         this.currentstep -= this.MICROSTEPS / 2;
                     }
                 } else {
-                    if (dir == module.exports.MotorHat.FORWARD) {
+                    if (dir == Motor.MotorHat.FORWARD) {
                         this.currentstep += this.MICROSTEPS;
                     } else {
                         this.currentstep -= this.MICROSTEPS;
@@ -339,16 +339,16 @@ module.exports = {
             }
 
             // double
-            if (style == module.exports.MotorHat.DOUBLE) {
+            if (style == Motor.MotorHat.DOUBLE) {
 
                 if (!(this.currentstep / (this.MICROSTEPS / 2) % 2)) {
-                    if (dir == module.exports.MotorHat.FORWARD) {
+                    if (dir == Motor.MotorHat.FORWARD) {
                         this.currentstep += this.MICROSTEPS / 2;
                     } else {
                         this.currentstep -= this.MICROSTEPS / 2;
                     }
                 } else {
-                    if (dir == module.exports.MotorHat.FORWARD) {
+                    if (dir == Motor.MotorHat.FORWARD) {
                         this.currentstep += this.MICROSTEPS;
                     } else {
                         this.currentstep -= this.MICROSTEPS;
@@ -357,8 +357,8 @@ module.exports = {
             }
 
             // interleave
-            if (style == module.exports.MotorHat.INTERLEAVE) {
-                if (dir == module.exports.MotorHat.FORWARD) {
+            if (style == Motor.MotorHat.INTERLEAVE) {
+                if (dir == Motor.MotorHat.FORWARD) {
                     this.currentstep += this.MICROSTEPS / 2
                 }
                 else {
@@ -367,9 +367,9 @@ module.exports = {
             }
 
             // microstep
-            if (style == module.exports.MotorHat.MICROSTEP) {
+            if (style == Motor.MotorHat.MICROSTEP) {
 
-                if (dir == module.exports.MotorHat.FORWARD) {
+                if (dir == Motor.MotorHat.FORWARD) {
                     this.currentstep += 1;
                 } else {
                     this.currentstep -= 1;
@@ -406,7 +406,7 @@ module.exports = {
 
             var coils = [0, 0, 0, 0];
 
-            if (style == module.exports.MotorHat.MICROSTEP) {
+            if (style == Motor.MotorHat.MICROSTEP) {
                 if (this.currentstep >= 0 && this.currentstep < this.MICROSTEPS) {
                     coils = [1, 1, 0, 0];
                 } else if (this.currentstep >= this.MICROSTEPS && this.currentstep < this.MICROSTEPS * 2) {
@@ -442,10 +442,10 @@ module.exports = {
             var s_per_s = this.sec_per_step;
             var lateststep = 0;
 
-            if (stepstyle == module.exports.MotorHat.INTERLEAVE) {
+            if (stepstyle == Motor.MotorHat.INTERLEAVE) {
                 s_per_s = Math.floor(s_per_s / 2);
             }
-            if (stepstyle == module.exports.MotorHat.MICROSTEP) {
+            if (stepstyle == Motor.MotorHat.MICROSTEP) {
                 s_per_s = Math.floor(s_per_s / this.MICROSTEPS);
                 steps *= this.MICROSTEPS;
             }
@@ -475,3 +475,4 @@ module.exports = {
         motorHat.getMotor(4).run(motorHat.RELEASE);
     }
 };
+module.exports = Motor;
