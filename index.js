@@ -47,7 +47,6 @@ var Motor = {
                 myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
                 myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
             }
-            Motor.turnOffMotors(mh);
             console.log("end motor test");
         } catch (err) {
             console.log(err);
@@ -465,17 +464,6 @@ var Motor = {
                 }
             }
         }
-    }
-    ,
-    /**
-     * turn off motors
-     * @param motorHat
-     */
-    turnOffMotors: function (motorHat) {
-        motorHat.getMotor(1).run(motorHat.RELEASE);
-        motorHat.getMotor(2).run(motorHat.RELEASE);
-        motorHat.getMotor(3).run(motorHat.RELEASE);
-        motorHat.getMotor(4).run(motorHat.RELEASE);
     }
 };
 module.exports = Motor;
