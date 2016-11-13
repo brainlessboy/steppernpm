@@ -71,7 +71,7 @@ var Motor = {
         this.MICROSTEP = 4;
 
         this.i2caddr = 0x60;
-        this.frequency = 1600;
+        this.frequency = 1600.0;
 
         // array of motors attached
         this.motors = [];
@@ -449,6 +449,7 @@ var Motor = {
             if (stepstyle == Motor.MotorHat.INTERLEAVE) {
                 s_per_s = Math.floor(s_per_s / 2);
             }
+
             if (stepstyle == Motor.MotorHat.MICROSTEP) {
                 s_per_s = Math.floor(s_per_s / this.MICROSTEPS);
                 steps *= this.MICROSTEPS;
@@ -463,7 +464,6 @@ var Motor = {
                 while (lateststep != 0 && lateststep != this.MICROSTEPS) {
                     lateststep = this.oneStep(direction, stepstyle);
                     sleep.sleep(s_per_s);
-                    console.log(".");
                 }
             }
         };
