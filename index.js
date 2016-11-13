@@ -18,7 +18,7 @@ var Motor = {
         try {
             console.log("motor hat instance");
             var mh = new Motor.MotorHat();
-            console.log("motor hat init);
+            console.log("motor hat init");
             mh.init();
             console.log("motor hat ready");
 
