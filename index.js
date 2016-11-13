@@ -3,9 +3,6 @@ var sleep = require('sleep');
 
 /**
  * Stepper Motor Controller (Adafruit)
- *
- * @param  {String} html
- * @return {String}
  */
 var Motor = {
 
@@ -26,7 +23,7 @@ var Motor = {
             console.log("motor hat ready");
 
             console.log("motor hat stepper");
-            myStepper = mh.getStepper(200, 1);
+            var myStepper = mh.getStepper(200, 1);
             myStepper.setSpeed(30);
             console.log("motor hat stepper ready");
 
