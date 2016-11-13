@@ -7,9 +7,3 @@ try {
 } catch (err) {
     console.log(err);
 }
-
-try {
-    stepper.turnOffMotors();
-} catch (err) {
-    console.log(err);
-}

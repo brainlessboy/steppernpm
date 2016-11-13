@@ -47,6 +47,7 @@ var Motor = {
                 myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
                 myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
             }
+            Motor.turnOffMotors(mh);
             console.log("end motor test");
         } catch (err) {
             console.log(err);
