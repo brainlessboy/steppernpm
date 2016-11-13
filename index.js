@@ -19,36 +19,52 @@ var Motor = {
         var wire = new i2c(address, {device: '/dev/i2c-1'});
 
         wire.scan(function (err, data) {
+
+            console.log("----------------------------");
+            console.log("-----------SCAN-------------");
+            console.log("----------------------------");
             console.log("err:" + err);
             console.log("data:" + data);
 
             for (i = 0; i < data.length; i++) {
                 console.log("" + data[i]);
             }
+            console.log("-----------END--------------");
         });
 
-        var mh = new Motor.MotorHat();
-        mh.init();
+        try {
+            console.log("motor hat instance");
+            var mh = new Motor.MotorHat();
+            console.log("motor hat init);
+            mh.init();
+            console.log("motor hat ready");
 
-        myStepper = mh.getStepper(200, 1);
-        myStepper.setSpeed(30);
+            console.log("motor hat stepper");
+            myStepper = mh.getStepper(200, 1);
+            myStepper.setSpeed(30);
+            console.log("motor hat stepper ready");
 
-        for (var i = 0; i < 1; i++) {
-            console.log("Single coil steps");
-            myStepper.step(10, mh.FORWARD, mh.SINGLE);
-            myStepper.step(10, mh.BACKWARD, mh.SINGLE);
+            console.log("start motor test");
+            for (var i = 0; i < 5; i++) {
+                console.log("Single coil steps");
+                myStepper.step(100, mh.FORWARD, mh.SINGLE);
+                myStepper.step(100, mh.BACKWARD, mh.SINGLE);
 
-            console.log("Double coil steps");
-            myStepper.step(10, mh.FORWARD, mh.DOUBLE);
-            myStepper.step(10, mh.BACKWARD, mh.DOUBLE);
+                console.log("Double coil steps");
+                myStepper.step(100, mh.FORWARD, mh.DOUBLE);
+                myStepper.step(100, mh.BACKWARD, mh.DOUBLE);
 
-            console.log("Interleaved coil steps");
-            myStepper.step(10, mh.FORWARD, mh.INTERLEAVE);
-            myStepper.step(10, mh.BACKWARD, mh.INTERLEAVE);
+                console.log("Interleaved coil steps");
+                myStepper.step(100, mh.FORWARD, mh.INTERLEAVE);
+                myStepper.step(100, mh.BACKWARD, mh.INTERLEAVE);
 
-            console.log("Microsteps");
-            myStepper.step(10, mh.FORWARD, mh.MICROSTEP);
-            myStepper.step(10, mh.BACKWARD, mh.MICROSTEP);
+                console.log("Microsteps");
+                myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
+                myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
+            }
+            console.log("end motor test");
+        } catch (err) {
+            console.log(err);
         }
     },
 
