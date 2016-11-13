@@ -93,7 +93,7 @@ var Motor = {
                 this.frequency = freq;
             }
 
-            console.log("MotorHat addr:" + addr);
+            console.log("MotorHat addr:" + this.i2caddr);
 
             this.motors = [];
 

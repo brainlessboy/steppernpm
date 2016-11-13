@@ -39,9 +39,7 @@ while (true) {
     console.log("Microsteps");
     myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
     myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
-}
-turnOffMotors(motorHat);
-
+};
 
 /**
  * MotorHat object containing all required functions
@@ -152,7 +150,7 @@ function PWM() {
     this.ALLCALL = 0x01;
     this.INVRT = 0x10;
     this.OUTDRV = 0x04;
-    
+
     this.prescaleval;
     this.prescale;
     this.oldmode;
