@@ -91,6 +91,8 @@ var Motor = {
                 this.frequency = freq;
             }
 
+            console.log("MotorHat addr:" + addr);
+
             this.motors = [];
 
             var stepperOne = new Motor.StepperMotor();
@@ -172,7 +174,7 @@ var Motor = {
         this.mode1;
 
         this.softwareReset = function () {
-            wire.writeByte(0x06, function (err) {
+            this.wire.writeByte(0x06, function (err) {
                 if (err) {
                     console.out("general software reset sent failure ->" + err);
                 }
@@ -249,6 +251,7 @@ var Motor = {
         };
 
         this.writeBytes = function (address, bytes) {
+            console.log(address + " " + bytes);
             this.wire.writeBytes(address, bytes, function (err) {
                 if (err) {
                     console.out("PWM write failure ->" + err);
@@ -454,7 +457,7 @@ var Motor = {
                 sleep.usleep(s_per_s);
             }
 
-            if (stepstyle == this.MICROSTEP) {
+            if (stepstyle == Motor.MotorHat.MICROSTEP) {
                 while (lateststep != 0 && lateststep != this.MICROSTEPS) {
                     lateststep = this.oneStep(dir, stepstyle);
                     sleep.sleep(s_per_s);
