@@ -459,7 +459,7 @@ var Motor = {
 
             if (stepstyle == Motor.MotorHat.MICROSTEP) {
                 while (lateststep != 0 && lateststep != this.MICROSTEPS) {
-                    lateststep = this.oneStep(dir, stepstyle);
+                    lateststep = this.oneStep(direction, stepstyle);
                     sleep.sleep(s_per_s);
                 }
             }
