@@ -445,6 +445,7 @@ function StepperMotor() {
             while (lateststep != 0 && lateststep != this.MICROSTEPS) {
                 lateststep = this.oneStep(direction, stepstyle);
                 sleep.sleep(s_per_s);
+                console.log(".");
             }
         }
     }
