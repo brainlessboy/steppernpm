@@ -9,7 +9,8 @@ var sleep = require('sleep');
  */
 var Motor = {
 
-    sleepTime:500,
+    sleepTime: 500,
+    wire: null,
 
     /**
      * make sure all hardware is hooked before testing
@@ -79,7 +80,6 @@ var Motor = {
         this.pwm;
 
         /**
-         *
          * @param addr = 0x60
          * @param freq = 1600
          */
@@ -168,7 +168,6 @@ var Motor = {
         this.INVRT = 0x10;
         this.OUTDRV = 0x04;
 
-        this.wire;
         this.prescaleval;
         this.prescale;
         this.oldmode;
@@ -176,7 +175,7 @@ var Motor = {
         this.mode1;
 
         this.softwareReset = function () {
-            this.wire.writeByte(0x06, function (err) {
+            Motor.wire.writeByte(0x06, function (err) {
                 if (err) {
                     console.out("general software reset sent failure ->" + err);
                 }
@@ -185,7 +184,7 @@ var Motor = {
 
         this.init = function (address) {
 
-            this.wire = new i2c(address, {device: '/dev/i2c-1'});
+            Motor.wire = new i2c(address, {device: '/dev/i2c-1'});
             this.setALLPWM(0, 0);
 
             this.writeBytes(this.MODE2, [this.OUTDRV]);
@@ -193,7 +192,7 @@ var Motor = {
 
             sleep.usleep(Motor.sleepTime);
 
-            this.wire.readBytes(this.MODE1, 1, function (err, res) {
+            Motor.wire.readBytes(this.MODE1, 1, function (err, res) {
 
                 if (err) {
                     console.log("problem reading bytes from MODE1 length 1 " + err);
@@ -220,7 +219,7 @@ var Motor = {
             prescaleval -= 1.0;
             this.prescale = Math.floor(prescaleval + 0.5);
 
-            this.wire.readBytes(this.MODE1, 1, function (err, res) {
+            Motor.wire.readBytes(this.MODE1, 1, function (err, res) {
 
                 if (err) {
                     console.log("problem reading bytes from MODE1 length 1 " + err);
@@ -253,7 +252,7 @@ var Motor = {
         };
 
         this.writeBytes = function (address, bytes) {
-            this.wire.writeBytes(address, bytes, function (err) {
+            Motor.wire.writeBytes(address, bytes, function (err) {
                 if (err) {
                     console.out("PWM write failure ->" + err);
                 }

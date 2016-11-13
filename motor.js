@@ -152,8 +152,7 @@ function PWM() {
     this.ALLCALL = 0x01;
     this.INVRT = 0x10;
     this.OUTDRV = 0x04;
-
-    this.wire;
+    
     this.prescaleval;
     this.prescale;
     this.oldmode;
@@ -169,7 +168,7 @@ function PWM() {
 
     this.init = function (address) {
 
-        this.wire = new i2c(address, {device: '/dev/i2c-1'});
+        wire = new i2c(address, {device: '/dev/i2c-1'});
         this.setALLPWM(0, 0);
 
         this.writeBytes(this.MODE2, [this.OUTDRV]);
@@ -238,7 +237,7 @@ function PWM() {
     };
 
     this.writeBytes = function (address, bytes) {
-        this.wire.writeBytes(address, bytes, function (err) {
+        wire.writeBytes(address, bytes, function (err) {
             if (err) {
                 console.out("PWM write failure ->" + err);
             }
