@@ -295,15 +295,13 @@ function StepperMotor() {
     this.setSpeed = function (rpm) {
         this.sec_per_step = Math.floor((60 * 1000000) / (this.revsteps * rpm));
         this.steppingCounter = 0;
+        console.log("speen" + rpm + " " + this.sec_per_step);
     };
 
     this.oneStep = function (dir, style) {
 
         var pwm_a = 255;
         var pwm_b = 255;
-
-        // todo: just implemented one style, make the others as well
-
 
         // single
         if (style == mh.SINGLE) {
@@ -420,8 +418,7 @@ function StepperMotor() {
         this.MC.setPin(this.BIN2, coils[3]);
 
         return this.currentstep
-    }
-    ;
+    };
 
     this.step = function (steps, direction, stepstyle) {
 
@@ -449,70 +446,3 @@ function StepperMotor() {
         }
     }
 }
-
-
-function DCMotor() {
-    //TODO: if requried one day :-)
-}
-
-function turnOffMotors(motorHat) {
-    motorHat.getMotor(1).run(motorHat.RELEASE);
-    motorHat.getMotor(2).run(motorHat.RELEASE);
-    motorHat.getMotor(3).run(motorHat.RELEASE);
-    motorHat.getMotor(4).run(motorHat.RELEASE);
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

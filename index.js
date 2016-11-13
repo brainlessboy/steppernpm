@@ -312,6 +312,7 @@ var Motor = {
         this.setSpeed = function (rpm) {
             this.sec_per_step = Math.floor((60 * 1000000) / (this.revsteps * rpm));
             this.steppingCounter = 0;
+            console.log("speen" + rpm + " " + this.sec_per_step);
         };
 
         this.oneStep = function (dir, style) {
