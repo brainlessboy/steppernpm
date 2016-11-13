@@ -15,23 +15,6 @@ var Motor = {
      */
     test: function () {
 
-        var address = 0x60;
-        var wire = new i2c(address, {device: '/dev/i2c-1'});
-
-        wire.scan(function (err, data) {
-
-            console.log("----------------------------");
-            console.log("-----------SCAN-------------");
-            console.log("----------------------------");
-            console.log("err:" + err);
-            console.log("data:" + data);
-
-            for (i = 0; i < data.length; i++) {
-                console.log("" + data[i]);
-            }
-            console.log("-----------END--------------");
-        });
-
         try {
             console.log("motor hat instance");
             var mh = new Motor.MotorHat();
