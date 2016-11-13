@@ -237,6 +237,7 @@ function PWM() {
     };
 
     this.writeBytes = function (address, bytes) {
+        console.log(address + " " + bytes);
         this.wire.writeBytes(address, bytes, function (err) {
             if (err) {
                 console.out("PWM write failure ->" + err);
@@ -443,7 +444,7 @@ function StepperMotor() {
             sleep.usleep(s_per_s);
         }
 
-        if (stepstyle == this.MICROSTEP) {
+        if (stepstyle == mh.MICROSTEP) {
             while (lateststep != 0 && lateststep != this.MICROSTEPS) {
                 lateststep = this.oneStep(dir, stepstyle);
                 sleep.sleep(s_per_s);
