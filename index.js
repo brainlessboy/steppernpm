@@ -34,7 +34,7 @@ var Motor = {
                 sm2.setSpeed(speed2);
                 sm2.step(steps2, direction2, Motor.stepStyle);
             }
-        ], callback);
+        ], function(){});
     },
     /**
      * motor 1 or 2
