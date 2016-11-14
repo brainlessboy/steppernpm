@@ -23,7 +23,7 @@ var Motor = {
             var myStepper = mh.getStepper(200, 1);
             myStepper.setSpeed(30);
 
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 2; i++) {
                 console.log("Single coil steps");
                 myStepper.step(100, mh.FORWARD, mh.SINGLE);
                 myStepper.step(100, mh.BACKWARD, mh.SINGLE);
@@ -49,7 +49,12 @@ var Motor = {
      * @param address
      */
     init:function(address){
-        Motor.wire= new i2c(address, {device: '/dev/i2c-1'});
+        Motor.wire = new i2c(address, {device: '/dev/i2c-1'});
+        Motor.wire.writeByte(0x06, function (err) {
+            if (err) {
+                console.out("general software reset sent failure ->" + err);
+            }
+        });
     },
     /**
      * MotorHat object containing all required functions
@@ -68,7 +73,7 @@ var Motor = {
         this.MICROSTEP = 4;
 
         this.i2caddr = 0x60;
-        this.frequency = 1600.0;
+        this.frequency = 1600;
 
         // array of motors attached
         this.motors = [];
@@ -100,13 +105,9 @@ var Motor = {
 
             this.steppers = [stepperOne, stepperTwo];
 
-            try {
-                this.pwm = new Motor.PWM();
-                this.pwm.init(0x60);
-                this.pwm.setPWMFreq(this.frequency);
-            } catch (err) {
-                console.log(err);
-            }
+            this.pwm = new Motor.PWM();
+            this.pwm.init(0x60);
+            this.pwm.setPWMFreq(this.frequency);
         };
 
         this.setPin = function (pin, value) {
@@ -130,7 +131,7 @@ var Motor = {
                 console.log('MotorHAT Stepper must be between 1 and 2 inclusive');
             }
             return this.steppers[num - 1];
-        }
+        };
 
         this.getMotor = function (num) {
             if (num < 1 || num > 4) {
@@ -139,6 +140,7 @@ var Motor = {
             return this.motors[num - 1];
         }
     },
+
     PWM: function () {
 
         this.MODE1 = 0x00;
@@ -166,7 +168,6 @@ var Motor = {
         this.prescaleval;
         this.prescale;
         this.oldmode;
-        this.newmode;
         this.mode1;
 
         this.softwareReset = function () {
@@ -223,8 +224,8 @@ var Motor = {
                 this.oldmode = res;
             });
 
-            this.newmode = (this.oldmode & 0x7F) | 0x10;
-            this.writeBytes(this.MODE1, [this.newmode]);
+            newmode = (this.oldmode & 0x7F) | 0x10;
+            this.writeBytes(this.MODE1, [newmode]);
             this.writeBytes(this.PRESCALE, [Math.floor(this.prescale)]);
             this.writeBytes(this.MODE1, [this.oldmode]);
             sleep.usleep(Motor.sleepTime);
@@ -313,8 +314,6 @@ var Motor = {
 
             var pwm_a = 255;
             var pwm_b = 255;
-
-            // todo: just implemented one style, make the others as well
 
             // single
             if (style == Motor.MotorHat.SINGLE) {
@@ -443,7 +442,6 @@ var Motor = {
             if (stepstyle == Motor.MotorHat.INTERLEAVE) {
                 s_per_s = Math.floor(s_per_s / 2);
             }
-
             if (stepstyle == Motor.MotorHat.MICROSTEP) {
                 s_per_s = Math.floor(s_per_s / this.MICROSTEPS);
                 steps *= this.MICROSTEPS;
