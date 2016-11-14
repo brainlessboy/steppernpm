@@ -42,7 +42,7 @@ var Motor = {
         var sm = Motor.mh.getStepper(200, motor);
         sm.setSpeed(speed);
         sm.step(steps, direction, Motor.stepStyle);
-    }
+    },
     /**
      * move forward amount of steps and speed stepper motor number 1 or 2
      * @param steps
