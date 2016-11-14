@@ -13,7 +13,38 @@ var Motor = {
     stepStyle: null,
 
     /**
-     * move forward amount of steps and speed stepper motor number 0 or 1
+     * moves both motors (linear x/y motion)
+     * @param steps1
+     * @param speed1
+     * @param direction1
+     * @param steps2
+     * @param speed2
+     * @param direction2
+     */
+    line: function (steps1, speed1, direction1, steps2, speed2, direction2) {
+
+        var sm1 = Motor.mh.getStepper(10, 1);
+        sm1.setSpeed(speed1);
+        sm1.step(steps1, direction1, Motor.stepStyle);
+
+        var sm2 = Motor.mh.getStepper(10, 2);
+        sm2.setSpeed(speed2);
+        sm2.step(steps2, direction2, Motor.stepStyle);
+    },
+    /**
+     * motor 1 or 2
+     * @param steps
+     * @param speed
+     * @param direction
+     * @param motor
+     */
+    move: function (steps, speed, direction, motor) {
+        var sm = Motor.mh.getStepper(200, motor);
+        sm.setSpeed(speed);
+        sm.step(steps, direction, Motor.stepStyle);
+    }
+    /**
+     * move forward amount of steps and speed stepper motor number 1 or 2
      * @param steps
      * @param speed
      * @param motor 0 or 1 (only two motors available if attached)
@@ -24,7 +55,7 @@ var Motor = {
         sm.step(steps, Motor.mh.FORWARD, Motor.stepStyle);
     },
     /**
-     * Move backwward amount of steps and speed stepper motor 0 or 1
+     * Move backwward amount of steps and speed stepper motor 1 or 2
      * @param steps
      * @param speed
      * @param motor 0 or 1 (only two motors available if attached)
