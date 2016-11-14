@@ -19,27 +19,27 @@ var Motor = {
         try {
 
             Motor.mh = new Motor.MotorHat();
-            mh.init();
+            Motor.mh.init();
 
             var myStepper = Motor.mh.getStepper(200, 1);
             myStepper.setSpeed(30);
 
             for (var i = 0; i < 2; i++) {
                 console.log("Single coil steps");
-                myStepper.step(100, mh.FORWARD, mh.SINGLE);
-                myStepper.step(100, mh.BACKWARD, mh.SINGLE);
+                myStepper.step(100, Motor.mh.FORWARD, Motor.mh.SINGLE);
+                myStepper.step(100, Motor.mh.BACKWARD, Motor.mh.SINGLE);
 
                 console.log("Double coil steps");
-                myStepper.step(100, mh.FORWARD, mh.DOUBLE);
-                myStepper.step(100, mh.BACKWARD, mh.DOUBLE);
+                myStepper.step(100, Motor.mh.FORWARD, Motor.mh.DOUBLE);
+                myStepper.step(100, Motor.mh.BACKWARD, Motor.mh.DOUBLE);
 
                 console.log("Interleaved coil steps");
-                myStepper.step(100, mh.FORWARD, mh.INTERLEAVE);
-                myStepper.step(100, mh.BACKWARD, mh.INTERLEAVE);
+                myStepper.step(100, Motor.mh.FORWARD, Motor.mh.INTERLEAVE);
+                myStepper.step(100, Motor.mh.BACKWARD, Motor.mh.INTERLEAVE);
 
                 console.log("Microsteps");
-                myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
-                myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
+                myStepper.step(100, Motor.mh.FORWARD, Motor.mh.MICROSTEP);
+                myStepper.step(100, Motor.mh.BACKWARD, Motor.mh.MICROSTEP);
             }
         } catch (err) {
             console.log(err);
