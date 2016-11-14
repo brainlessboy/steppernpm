@@ -2,14 +2,48 @@ var i2c = require('i2c');
 var sleep = require('sleep');
 
 /**
- * Stepper Motor Controller (Adafruit)
+ * Stepper Motor Controller (Adafruit) currently only works with a single hat
+ * future implementation will allow to address mutliple motor hats
  */
 var Motor = {
 
     sleepTime: 500,
     wire: null,
     mh: null,
+    stepStyle: null,
 
+    /**
+     * move forward amount of steps and speed stepper motor number 0 or 1
+     * @param steps
+     * @param speed
+     * @param motor 0 or 1 (only two motors available if attached)
+     */
+    moveForward: function (steps, speed, motor) {
+        var sm = Motor.mh.getStepper(200, motor);
+        sm.setSpeed(speed);
+        sm.step(steps, Motor.mh.FORWARD, Motor.stepStyle);
+    },
+    /**
+     * Move backwward amount of steps and speed stepper motor 0 or 1
+     * @param steps
+     * @param speed
+     * @param motor 0 or 1 (only two motors available if attached)
+     */
+    moveBackward: function (steps, speed, motor) {
+        var sm = Motor.mh.getStepper(200, motor);
+        sm.setSpeed(speed);
+        myStepper.step(steps, Motor.mh.BACKWARD, Motor.stepStyle);
+    },
+    /**
+     * set style SINGLE,MICROSTEPS
+     * @param moveStyle
+     */
+    setSINGLE: function () {
+        Motor.stepStyle = Motor.mh.SINGLE;
+    },
+    setMICROSTEPS: function () {
+        Motor.stepStyle = Motor.mh.MICROSTEP;
+    },
     /**
      * make sure all hardware is hooked before testing
      * the test will loop 10 times each type of coil
@@ -41,6 +75,9 @@ var Motor = {
                 myStepper.step(100, Motor.mh.FORWARD, Motor.mh.MICROSTEP);
                 myStepper.step(100, Motor.mh.BACKWARD, Motor.mh.MICROSTEP);
             }
+
+            Motor.wire.reset();
+
         } catch (err) {
             console.log(err);
         }
@@ -50,7 +87,21 @@ var Motor = {
      * @param address
      */
     init: function (address) {
+
+        // i2c wire
         Motor.wire = new i2c(address, {device: '/dev/i2c-1'});
+
+        // motorhat initialisation
+        Motor.mh = new Motor.MotorHat();
+        Motor.mh.init();
+
+        // set stepstyle
+        Motor.setSINGLE();
+    },
+    /**
+     * reset software
+     */
+    reset: function () {
         Motor.wire.writeByte(0x06, function (err) {
             if (err) {
                 console.out("general software reset sent failure ->" + err);
