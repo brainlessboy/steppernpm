@@ -8,6 +8,7 @@ var Motor = {
 
     sleepTime: 500,
     wire: null,
+    mh: null,
 
     /**
      * make sure all hardware is hooked before testing
@@ -17,10 +18,10 @@ var Motor = {
 
         try {
 
-            var mh = new Motor.MotorHat();
+            Motor.mh = new Motor.MotorHat();
             mh.init();
 
-            var myStepper = mh.getStepper(200, 1);
+            var myStepper = Motor.mh.getStepper(200, 1);
             myStepper.setSpeed(30);
 
             for (var i = 0; i < 2; i++) {
@@ -48,7 +49,7 @@ var Motor = {
      * initial setup of the motor hat i2c wire
      * @param address
      */
-    init:function(address){
+    init: function (address) {
         Motor.wire = new i2c(address, {device: '/dev/i2c-1'});
         Motor.wire.writeByte(0x06, function (err) {
             if (err) {
@@ -316,16 +317,16 @@ var Motor = {
             var pwm_b = 255;
 
             // single
-            if (style == Motor.MotorHat.SINGLE) {
+            if (style == Motor.mh.SINGLE) {
                 if ((this.currentstep / (this.MICROSTEPS / 2)) % 2) {
 
-                    if (dir == Motor.MotorHat.FORWARD) {
+                    if (dir == Motor.mh.FORWARD) {
                         this.currentstep += this.MICROSTEPS / 2;
                     } else {
                         this.currentstep -= this.MICROSTEPS / 2;
                     }
                 } else {
-                    if (dir == Motor.MotorHat.FORWARD) {
+                    if (dir == Motor.mh.FORWARD) {
                         this.currentstep += this.MICROSTEPS;
                     } else {
                         this.currentstep -= this.MICROSTEPS;
@@ -334,16 +335,16 @@ var Motor = {
             }
 
             // double
-            if (style == Motor.MotorHat.DOUBLE) {
+            if (style == Motor.mh.DOUBLE) {
 
                 if (!(this.currentstep / (this.MICROSTEPS / 2) % 2)) {
-                    if (dir == Motor.MotorHat.FORWARD) {
+                    if (dir == Motor.mh.FORWARD) {
                         this.currentstep += this.MICROSTEPS / 2;
                     } else {
                         this.currentstep -= this.MICROSTEPS / 2;
                     }
                 } else {
-                    if (dir == Motor.MotorHat.FORWARD) {
+                    if (dir == Motor.mh.FORWARD) {
                         this.currentstep += this.MICROSTEPS;
                     } else {
                         this.currentstep -= this.MICROSTEPS;
@@ -352,8 +353,8 @@ var Motor = {
             }
 
             // interleave
-            if (style == Motor.MotorHat.INTERLEAVE) {
-                if (dir == Motor.MotorHat.FORWARD) {
+            if (style == Motor.mh.INTERLEAVE) {
+                if (dir == Motor.mh.FORWARD) {
                     this.currentstep += this.MICROSTEPS / 2
                 }
                 else {
@@ -362,9 +363,9 @@ var Motor = {
             }
 
             // microstep
-            if (style == Motor.MotorHat.MICROSTEP) {
+            if (style == Motor.mh.MICROSTEP) {
 
-                if (dir == Motor.MotorHat.FORWARD) {
+                if (dir == Motor.mh.FORWARD) {
                     this.currentstep += 1;
                 } else {
                     this.currentstep -= 1;
@@ -401,7 +402,7 @@ var Motor = {
 
             var coils = [0, 0, 0, 0];
 
-            if (style == Motor.MotorHat.MICROSTEP) {
+            if (style == Motor.mh.MICROSTEP) {
                 if (this.currentstep >= 0 && this.currentstep < this.MICROSTEPS) {
                     coils = [1, 1, 0, 0];
                 } else if (this.currentstep >= this.MICROSTEPS && this.currentstep < this.MICROSTEPS * 2) {
@@ -438,11 +439,12 @@ var Motor = {
             var lateststep = 0;
 
             console.log("s_per_s:" + s_per_s);
+            console.log("motorhat:" + Motor.mh.INTERLEAVE);
 
-            if (stepstyle == Motor.MotorHat.INTERLEAVE) {
+            if (stepstyle == Motor.mh.INTERLEAVE) {
                 s_per_s = Math.floor(s_per_s / 2);
             }
-            if (stepstyle == Motor.MotorHat.MICROSTEP) {
+            if (stepstyle == Motor.mh.MICROSTEP) {
                 s_per_s = Math.floor(s_per_s / this.MICROSTEPS);
                 steps *= this.MICROSTEPS;
             }
@@ -452,7 +454,7 @@ var Motor = {
                 sleep.usleep(s_per_s);
             }
 
-            if (stepstyle == Motor.MotorHat.MICROSTEP) {
+            if (stepstyle == Motor.mh.MICROSTEP) {
                 while (lateststep != 0 && lateststep != this.MICROSTEPS) {
                     lateststep = this.oneStep(direction, stepstyle);
                     sleep.sleep(s_per_s);
