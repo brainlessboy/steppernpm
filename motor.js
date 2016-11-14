@@ -23,7 +23,9 @@ myStepper = mh.getStepper(200, 1);
 myStepper.setSpeed(30);
 
 
-while (true) {
+for (var i = 0; i < 2; i++) {
+
+    console.log("**** " + i + " ****");
     console.log("Single coil steps");
     myStepper.step(100, mh.FORWARD, mh.SINGLE);
     myStepper.step(100, mh.BACKWARD, mh.SINGLE);
@@ -39,8 +41,9 @@ while (true) {
     console.log("Microsteps");
     myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
     myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
-}
-;
+};
+
+wire.close();
 
 /**
  * MotorHat object containing all required functions
@@ -166,8 +169,7 @@ function PWM() {
     };
 
     this.init = function (address) {
-
-        wire = new i2c(address, {device: '/dev/i2c-1'});
+        
         this.setALLPWM(0, 0);
 
         this.writeBytes(this.MODE2, [this.OUTDRV]);
@@ -445,7 +447,6 @@ function StepperMotor() {
             while (lateststep != 0 && lateststep != this.MICROSTEPS) {
                 lateststep = this.oneStep(direction, stepstyle);
                 sleep.sleep(s_per_s);
-                console.log(".");
             }
         }
     }
