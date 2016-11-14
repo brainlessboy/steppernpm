@@ -1,5 +1,6 @@
 var i2c = require('i2c');
 var sleep = require('sleep');
+var async = require('async');
 
 /**
  * Stepper Motor Controller (Adafruit) currently only works with a single hat
@@ -22,14 +23,18 @@ var Motor = {
      * @param direction2
      */
     line: function (steps1, speed1, direction1, steps2, speed2, direction2) {
-
-        var sm1 = Motor.mh.getStepper(10, 1);
-        sm1.setSpeed(speed1);
-        sm1.step(steps1, direction1, Motor.stepStyle);
-
-        var sm2 = Motor.mh.getStepper(10, 2);
-        sm2.setSpeed(speed2);
-        sm2.step(steps2, direction2, Motor.stepStyle);
+        async.parallel([
+            function () {
+                var sm1 = Motor.mh.getStepper(10, 1);
+                sm1.setSpeed(speed1);
+                sm1.step(steps1, direction1, Motor.stepStyle);
+            },
+            function () {
+                var sm2 = Motor.mh.getStepper(10, 2);
+                sm2.setSpeed(speed2);
+                sm2.step(steps2, direction2, Motor.stepStyle);
+            }
+        ], callback);
     },
     /**
      * motor 1 or 2
