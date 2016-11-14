@@ -16,18 +16,13 @@ var Motor = {
     test: function () {
 
         try {
-            console.log("motor hat instance");
-            var mh = new Motor.MotorHat();
-            console.log("motor hat init");
-            mh.init();
-            console.log("motor hat ready");
 
-            console.log("motor hat stepper");
+            var mh = new Motor.MotorHat();
+            mh.init();
+
             var myStepper = mh.getStepper(200, 1);
             myStepper.setSpeed(30);
-            console.log("motor hat stepper ready");
 
-            console.log("start motor test");
             for (var i = 0; i < 5; i++) {
                 console.log("Single coil steps");
                 myStepper.step(100, mh.FORWARD, mh.SINGLE);
@@ -45,12 +40,17 @@ var Motor = {
                 myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
                 myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
             }
-            console.log("end motor test");
         } catch (err) {
             console.log(err);
         }
     },
-
+    /**
+     * initial setup of the motor hat i2c wire
+     * @param address
+     */
+    init:function(address){
+        Motor.wire= new i2c(address, {device: '/dev/i2c-1'});
+    },
     /**
      * MotorHat object containing all required functions
      * @constructor
@@ -89,8 +89,6 @@ var Motor = {
             if (freq) {
                 this.frequency = freq;
             }
-
-            console.log("MotorHat addr:" + this.i2caddr);
 
             this.motors = [];
 
@@ -181,7 +179,6 @@ var Motor = {
 
         this.init = function (address) {
 
-            Motor.wire = new i2c(address, {device: '/dev/i2c-1'});
             this.setALLPWM(0, 0);
 
             this.writeBytes(this.MODE2, [this.OUTDRV]);
