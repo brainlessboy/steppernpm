@@ -23,23 +23,16 @@ var Motor = {
      * @param direction2
      */
     line: function (steps1, speed1, direction1, steps2, speed2, direction2) {
-        async.parallel([
-            function () {
-                if (steps1 != 0) {
-                    var sm1 = Motor.mh.getStepper(10, 1);
-                    sm1.setSpeed(speed1);
-                    sm1.step(steps1, direction1, Motor.stepStyle);
-                }
-            },
-            function () {
-                if (steps2 != 0) {
-                    var sm2 = Motor.mh.getStepper(10, 2);
-                    sm2.setSpeed(speed2);
-                    sm2.step(steps2, direction2, Motor.stepStyle);
-                }
-            }
-        ], function () {
-        });
+        if (steps1 != 0) {
+            var sm1 = Motor.mh.getStepper(10, 1);
+            sm1.setSpeed(speed1);
+            sm1.step(steps1, direction1, Motor.stepStyle);
+        }
+        if (steps2 != 0) {
+            var sm2 = Motor.mh.getStepper(10, 2);
+            sm2.setSpeed(speed2);
+            sm2.step(steps2, direction2, Motor.stepStyle);
+        }
     },
     /**
      * motor 1 or 2
