@@ -9,37 +9,48 @@ This library is a javascript/node.js rewrite of adafruits python based motor dri
 
 ## Usage
 
+Note: i was only able to drive one stepper at a time, simultaneous steppers currently not possible.
+
     var mh = new this.MotorHat();
     mh.init();
 
-    myStepper = mh.getStepper(200, 1);
-    myStepper.setSpeed(30);
+    // get stepper one
+    var stepperOne = mh.getStepper(200, 1);
+    stepperOne.setSpeed(30);
+    
+    // get stepper one
+    var stepperTwo = mh.getStepper(200, 2);
+    stepperTwo.setSpeed(30);
 
     //Single coil steps
-    myStepper.step(100, mh.FORWARD, mh.SINGLE);
-    myStepper.step(100, mh.BACKWARD, mh.SINGLE);
+    stepperOne.step(100, mh.FORWARD, mh.SINGLE);
+    stepperOne.step(100, mh.BACKWARD, mh.SINGLE);
 
     //Double coil steps
-    myStepper.step(100, mh.FORWARD, mh.DOUBLE);
-    myStepper.step(100, mh.BACKWARD, mh.DOUBLE);
+    stepperOne.step(100, mh.FORWARD, mh.DOUBLE);
+    stepperOne.step(100, mh.BACKWARD, mh.DOUBLE);
 
     //Interleaved coil steps
-    myStepper.step(100, mh.FORWARD, mh.INTERLEAVE);
-    myStepper.step(100, mh.BACKWARD, mh.INTERLEAVE);
+    stepperOne.step(100, mh.FORWARD, mh.INTERLEAVE);
+    stepperOne.step(100, mh.BACKWARD, mh.INTERLEAVE);
 
     //Microsteps
-    myStepper.step(100, mh.FORWARD, mh.MICROSTEP);
-    myStepper.step(100, mh.BACKWARD, mh.MICROSTEP);
+    stepperOne.step(100, mh.FORWARD, mh.MICROSTEP);
+    stepperOne.step(100, mh.BACKWARD, mh.MICROSTEP);
 
 ## Tests
 
         npm test
 
+        tests motor one only
+        
 also motor.js can be used for inital tests on the RaspberryP
 
-        node motor.js
+        node motor2.js
+        
+        tests the motor via the module
 
 ## Release History
 
-* 0.0.1 Initial release (untested with npm!)
+* 0.0.1 Initial release (tested)
 
